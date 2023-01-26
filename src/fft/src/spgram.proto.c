@@ -452,7 +452,7 @@ int SPGRAM(_get_psd_mag)(SPGRAM() _q,
     // compute magnitude (linear) and run FFT shift
     unsigned int i;
     unsigned int nfft_2 = _q->nfft / 2;
-    T scale = _q->accumulate ? 1.0f / max(1,_q->num_transforms) : 0.0f;
+    T scale = _q->accumulate ? 1.0f / max(1,_q->num_transforms) : 1.0f;
     // TODO: adjust scale if infinite integration
     for (i=0; i<_q->nfft; i++) {
         unsigned int k = (i + nfft_2) % _q->nfft;
