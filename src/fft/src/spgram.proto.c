@@ -45,6 +45,7 @@ struct SPGRAM(_s) {
     float           alpha;          // spectrum smoothing filter: feedforward parameter
     float           gamma;          // spectrum smoothing filter: feedback parameter
     int             accumulate;     // accumulate? or use time-average
+    float           correction;     // FFT power correction
 
     WINDOW()        buffer;         // input buffer
     TC *            buf_time;       // pointer to input array (allocated)
@@ -105,6 +106,7 @@ SPGRAM() SPGRAM(_create)(unsigned int _nfft,
     q->delay      = _delay;
     q->frequency  =  0;
     q->sample_rate= -1;
+    q->correction = -10 * log10f(q->nfft);
 
     // set object for full accumulation
     SPGRAM(_set_alpha)(q, -1.0f);
@@ -476,7 +478,7 @@ int SPGRAM(_get_psd)(SPGRAM() _q,
     // convert to dB
     unsigned int i;
     for (i=0; i<_q->nfft; i++)
-        _psd[i] = 10*log10f(_psd[i]);
+        _psd[i] = 10*log10f(_psd[i]) + _q->correction;
     return LIQUID_OK;
 }
 
