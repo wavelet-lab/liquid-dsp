@@ -355,7 +355,6 @@ void RESAMP2(_synthesizer_execute)(RESAMP2() _q,
     _y[1] *= _q->scale;
 }
 
-
 // execute half-band decimation
 //  _q      :   resamp2 object
 //  _x      :   input array [size: 2 x 1]
@@ -379,6 +378,24 @@ void RESAMP2(_decim_execute)(RESAMP2() _q,
 
     // set return value, applying scaling factor
     *_y = (y0 + y1) * _q->scale;
+}
+
+// execute half-band decimation
+//  _q      :   resamp2 object
+//  _x      :   input array [size: 2 x 1]
+//  _n      :   number of _output_ samples
+//  _y      :   output array [size: 1 x 1]
+void RESAMP2(_decim_execute_block)(RESAMP2() _q,
+                             TI *      _x,
+                             unsigned int   _n,
+                             TO *      _y)
+{
+    unsigned int i;
+    for (i=0; i<_n; i++) {
+        RESAMP2(_decim_execute)(_q, _x, _y);
+        _x += 2;
+        _y += 1;
+    }
 }
 
 // execute half-band interpolation
@@ -405,3 +422,20 @@ void RESAMP2(_interp_execute)(RESAMP2() _q,
     _y[1] *= _q->scale;
 }
 
+// execute half-band decimation
+//  _q      :   resamp2 object
+//  _x      :   input array [size: 1 x 1]
+//  _n      :   number of _input_ samples
+//  _y      :   output array [size: 2 x 1]
+void RESAMP2(_interp_execute_block)(RESAMP2() _q,
+                             TI *      _x,
+                             unsigned int   _n,
+                             TO *      _y)
+{
+    unsigned int i;
+    for (i=0; i<_n; i++) {
+        RESAMP2(_interp_execute)(_q, *_x, _y);
+        _x += 1;
+        _y += 2;
+    }
+}

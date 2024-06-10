@@ -4290,6 +4290,17 @@ void RESAMP2(_decim_execute)(RESAMP2() _q,                                  \
                              TI *      _x,                                  \
                              TO *      _y);                                 \
                                                                             \
+/* Execute resampler as half-band decimator on on a block of a pairs of */  \
+/* sequential time-domain input samples.                                */  \
+/*  _q  : resampler object                                              */  \
+/*  _x  : input array, [size: 2 x 1]                                    */  \
+/*  _n  : number of _output_ samples                                    */  \
+/*  _y  : output array, [size: 1 x 1]                                   */  \
+void RESAMP2(_decim_execute_block)(RESAMP2() _q,                            \
+                                   TI * _x,                                 \
+                                   unsigned int _n,                         \
+                                   TO *_y);                                 \
+                                                                            \
 /* Execute resampler as half-band interpolator on a single input sample */  \
 /*  _q  : resampler object                                              */  \
 /*  _x  : input sample                                                  */  \
@@ -4297,6 +4308,18 @@ void RESAMP2(_decim_execute)(RESAMP2() _q,                                  \
 void RESAMP2(_interp_execute)(RESAMP2() _q,                                 \
                               TI        _x,                                 \
                               TO *      _y);                                \
+                                                                            \
+/* Execute resampler as half-band interpolator on on a block of a pairs */  \
+/* of sequential time-domain input samples.                             */  \
+/*  _q  : resampler object                                              */  \
+/*  _x  : input array, [size: 1 x 1]                                    */  \
+/*  _n  : number of _input_ samples                                     */  \
+/*  _y  : output array, [size: 2 x 1]                                   */  \
+void RESAMP2(_interp_execute_block)(RESAMP2() _q,                           \
+                                    TI * _x,                                \
+                                    unsigned int _n,                        \
+                                    TO *_y);                                \
+                                                                            \
 
 LIQUID_RESAMP2_DEFINE_API(LIQUID_RESAMP2_MANGLE_RRRF,
                           float,
